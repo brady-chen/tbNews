@@ -270,3 +270,24 @@ class GoldNews(SpiderConfig):
             print "%s页面数据上传更新完毕" % self.data_name
         else:
             print "%s页面数据源无最新数据更新" % self.data_name
+
+num = 1
+
+
+def run_timer():
+    global num
+    print "------------------正在启动第%s次数据更新------------------" % str(num)
+    num += 1
+    try:
+        g = GoldNews('机构论金')
+        g.update_data(g.get_data())
+        g = GoldNews('名家点金')
+        g.update_data(g.get_data())
+        timer = threading.Timer(1800, run_timer)
+        timer.start()
+    except Exception, e:
+        print "报错原因：" + str(e)
+        run_timer()
+
+ if __name__ == "__main__":
+    run_timer()
